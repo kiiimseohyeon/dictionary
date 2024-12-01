@@ -1,29 +1,11 @@
 import React from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "./firebase-config";
-import Kakao from "kakao-js-sdk"; // Kakao SDK import
+import { loginWithKakao } from "./kakaoAuth"; // 카카오 로그인 함수 추가
 
 import googleImg from "../../assets/google-button.png"; // Google 로그인 이미지
 import kakaoImg from "../../assets/kakao-button.png"; // Kakao 로그인 이미지
 import logo from "../../assets/icon.png"; // 로고 이미지 import
-
-// Kakao 로그인 함수
-export const loginWithKakao = async () => {
-  try {
-    // Kakao SDK 초기화
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init("11ce0b264494bcf7102ff1b48f200dc3"); // JavaScript 앱 키 사용
-      console.log("Kakao SDK 초기화 완료");
-    }
-
-    // 카카오 로그인 요청
-    window.Kakao.Auth.authorize({
-      redirectUri: "http://localhost:3000/kakao-callback", // 리디렉션 URI 설정
-    });
-  } catch (error) {
-    console.error("Kakao 로그인 오류:", error);
-  }
-};
 
 const Login = () => {
   // Google 로그인 함수
@@ -31,23 +13,7 @@ const Login = () => {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
-
-      // 구글 사용자 정보 출력
-      console.log("구글 사용자 정보:", result.user);
-
-      // 구글 사용자 정보 저장 (localStorage)
-      const userInfo = {
-        displayName: result.user.displayName, // 사용자 이름
-        email: result.user.email,           // 이메일
-        photoURL: result.user.photoURL,     // 프로필 사진
-      };
-      localStorage.setItem("googleUser", JSON.stringify(userInfo));
-
-      // 로그인 성공 메시지 표시
-      alert("구글 로그인 성공!");
-
-      // 메인 페이지로 이동
-      window.location.href = "/"; // 메인 페이지로 이동
+      console.log(result.user); // 사용자 정보 출력
     } catch (error) {
       console.error("Google 로그인 오류:", error);
     }
@@ -117,7 +83,7 @@ const Login = () => {
 
       {/* Kakao 로그인 버튼 */}
       <button
-        onClick={loginWithKakao} // 로그인 버튼 클릭 시 Kakao 로그인 함수 호출
+        onClick={loginWithKakao}
         style={{
           border: "none",
           background: "none",

@@ -1,41 +1,94 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../assets/icon.png"; // 로고 이미지 경로
 
 const MainPage = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // 로그인 상태 확인
+  useEffect(() => {
+    const googleUser = localStorage.getItem("googleUser");
+    const kakaoAccessToken = localStorage.getItem("accessToken");
+
+    // 구글 사용자 정보 또는 카카오 액세스 토큰 중 하나라도 존재하면 로그인 상태 설정
+    if (googleUser || kakaoAccessToken) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   return (
-    <div style={{ backgroundColor: "#EDF1FD", minHeight: "100vh", fontFamily: "Arial, sans-serif", padding: "20px" }}>
+    <div
+      style={{
+        backgroundColor: "#EDF1FD",
+        minHeight: "100vh",
+        fontFamily: "Arial, sans-serif",
+        padding: "20px",
+      }}
+    >
       {/* 상단 헤더 */}
-      <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "40px" }}>
-        {/* 로그인 및 마이페이지 버튼 */}
+      <header
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "40px",
+        }}
+      >
         <div>
-          <button
-            style={{
-              marginLeft: "1300px",
-              padding: "10px 20px",
-              backgroundColor: "#2196F3",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-            onClick={() => (window.location.href = "/login")}
-          >
-            로그인
-          </button>
-          <button
-            style={{
-              marginLeft: "10px",
-              padding: "10px 20px",
-              backgroundColor: "#2196F3",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-            onClick={() => (window.location.href = "/mypage")}
-          >
-            마이페이지
-          </button>
+          {isLoggedIn ? (
+            // 로그인 상태: 마이페이지 버튼만 표시
+            <button
+              style={{
+                marginLeft: "1300px",
+                padding: "10px 20px",
+                backgroundColor: "#2196F3",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                window.location.href = "/mypage";
+              }}
+            >
+              마이페이지
+            </button>
+          ) : (
+            // 로그아웃 상태: 로그인 버튼과 마이페이지 버튼 표시
+            <>
+              <button
+                style={{
+                  marginLeft: "1300px",
+                  padding: "10px 20px",
+                  backgroundColor: "#2196F3",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  window.location.href = "/login";
+                }}
+              >
+                로그인
+              </button>
+              <button
+                style={{
+                  marginLeft: "10px",
+                  padding: "10px 20px",
+                  backgroundColor: "#2196F3",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  window.location.href = "/mypage";
+                }}
+              >
+                마이페이지
+              </button>
+            </>
+          )}
         </div>
       </header>
 
@@ -50,12 +103,23 @@ const MainPage = () => {
         }}
         onClick={() => (window.location.href = "/")}
       >
-        <img src={logo} alt="로고" style={{ width: "50px", height: "50px", marginBottom: "10px" }} />
+        <img
+          src={logo}
+          alt="로고"
+          style={{ width: "50px", height: "50px", marginBottom: "10px" }}
+        />
         <span style={{ fontSize: "24px", fontWeight: "bold" }}>유반사전</span>
       </div>
 
       {/* 검색바와 초성 버튼 */}
-      <main style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "20px" }}>
+      <main
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: "20px",
+        }}
+      >
         {/* 검색바 */}
         <div
           style={{
@@ -110,29 +174,31 @@ const MainPage = () => {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(7, 1fr)", // 7개씩 2줄 배열
+            gridTemplateColumns: "repeat(7, 1fr)",
             gap: "10px",
             justifyContent: "center",
             width: "100%",
             maxWidth: "600px",
           }}
         >
-          {["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ", "ㅂ", "ㅅ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"].map((consonant) => (
-            <button
-              key={consonant}
-              style={{
-                padding: "10px",
-                backgroundColor: "#fff",
-                border: "1px solid #ddd",
-                borderRadius: "5px",
-                cursor: "pointer",
-                transition: "background-color 0.3s",
-              }}
-              onClick={() => console.log(`${consonant} 버튼 클릭됨`)}
-            >
-              {consonant}
-            </button>
-          ))}
+          {["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ", "ㅂ", "ㅅ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"].map(
+            (consonant) => (
+              <button
+                key={consonant}
+                style={{
+                  padding: "10px",
+                  backgroundColor: "#fff",
+                  border: "1px solid #ddd",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                  transition: "background-color 0.3s",
+                }}
+                onClick={() => console.log(`${consonant} 버튼 클릭됨`)}
+              >
+                {consonant}
+              </button>
+            )
+          )}
         </div>
       </main>
 

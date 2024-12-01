@@ -1,21 +1,19 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainPage from "./pages/MainPage";
-import MyPage from "./pages/MyPage";
 import Login from "./components/Login/Login";
-import KakaoCallback from "./components/KakaoCallback";
+import MyPage from "./pages/MyPage"; // 마이페이지 예시
 
-const App = () => {
+function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/login" element={<Login />} /> {/* Login 경로 추가 */}
+        <Route path="/login" element={<Login />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/kakao-callback" element={<KakaoCallback />} />
       </Routes>
     </Router>
   );
-};
+}
 
 export default App;
